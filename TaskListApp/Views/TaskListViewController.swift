@@ -36,6 +36,7 @@ final class TaskListViewController: UITableViewController {
                 tableView.reloadData()
             case .failure(let error):
                 print(error)
+                present(AlertManager.showAlert(with: "Error", and: error.localizedDescription), animated: true)
             }
         }
     }

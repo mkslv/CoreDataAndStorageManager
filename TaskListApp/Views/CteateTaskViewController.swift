@@ -51,11 +51,11 @@ final class CteateTaskViewController: UIViewController {
     }
     
     func save() {
-        if let text = taskTextField.text {
+        if let text = taskTextField.text, !text.isEmpty {
             delegate.addTask(name: text)
             dismiss(animated: true)
         } else {
-            // Show alert: Text field is empty
+            present(AlertManager.showAlert(with: "Cannot save", and: "Text field is empty"), animated: true)
         }
     }
 }

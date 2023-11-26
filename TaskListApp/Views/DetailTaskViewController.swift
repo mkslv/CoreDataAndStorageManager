@@ -21,7 +21,6 @@ final class DetailTaskViewController: UITableViewController {
         task.subtasks?.array as? [Subtasker] ?? []
     }()
     
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -30,7 +29,6 @@ final class DetailTaskViewController: UITableViewController {
         // Do any additional setup after loading the view.
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "\(UITableViewCell.self)")
     }
-    
     
     // MARK: - Methods
     
@@ -42,6 +40,7 @@ final class DetailTaskViewController: UITableViewController {
                 tableView.reloadData()
             case .failure(let error):
                 print(error)
+                present(AlertManager.showAlert(with: "Error", and: error.localizedDescription), animated: true)
             }
         }
     }
@@ -52,8 +51,6 @@ final class DetailTaskViewController: UITableViewController {
         taskVC.delegate = self
         present(taskVC, animated: true)
     }
-
-    
 }
 
 // MARK: - Setting up View
@@ -68,9 +65,6 @@ private extension DetailTaskViewController {
         
         navigationItem.rightBarButtonItem = plusBarButton
         navigationController?.navigationBar.tintColor = .white
-        
-        // настроим Statuc bar style (сеть батарея часы и пр)
-
     }
 }
 
@@ -99,7 +93,9 @@ extension DetailTaskViewController {
         return cell
     }
     
-    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 
 // MARK: - tableView delete cell

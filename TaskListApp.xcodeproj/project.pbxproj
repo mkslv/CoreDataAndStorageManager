@@ -17,6 +17,7 @@
 		513606322B1139550005E33B /* FilledButtonFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513606312B1139550005E33B /* FilledButtonFactory.swift */; };
 		513606382B12B2190005E33B /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513606372B12B2190005E33B /* StoreManager.swift */; };
 		513606652B13E5E20005E33B /* DetailTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513606642B13E5E20005E33B /* DetailTaskViewController.swift */; };
+		513606672B140F620005E33B /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 513606662B140F620005E33B /* AlertManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		513606312B1139550005E33B /* FilledButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledButtonFactory.swift; sourceTree = "<group>"; };
 		513606372B12B2190005E33B /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		513606642B13E5E20005E33B /* DetailTaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTaskViewController.swift; sourceTree = "<group>"; };
+		513606662B140F620005E33B /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				513606312B1139550005E33B /* FilledButtonFactory.swift */,
+				513606662B140F620005E33B /* AlertManager.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -213,6 +216,7 @@
 				513606192B0FBDC30005E33B /* AppDelegate.swift in Sources */,
 				513606652B13E5E20005E33B /* DetailTaskViewController.swift in Sources */,
 				5136061B2B0FBDC30005E33B /* SceneDelegate.swift in Sources */,
+				513606672B140F620005E33B /* AlertManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
