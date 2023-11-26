@@ -7,10 +7,6 @@
 
 import UIKit
 
-protocol TaskViewControllerDelegate: AnyObject {
-    func addTask(name: String) -> Void
-}
-
 final class TaskListViewController: UITableViewController {
     // MARK: - Properties
     
@@ -40,13 +36,14 @@ final class TaskListViewController: UITableViewController {
                 tableView.reloadData()
             case .failure(let error):
                 print(error)
+                present(AlertManager.showAlert(with: "Error", and: error.localizedDescription), animated: true)
             }
         }
     }
     
     @objc
     private func addNewTask() {
-        let taskVC = TaskViewController()
+        let taskVC = CteateTaskViewController()
         // classic: navigationController?.pushViewController(taskVC, animated: true)
         taskVC.delegate = self
         present(taskVC, animated: true)
@@ -73,11 +70,7 @@ private extension TaskListViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = navBarApperance // для большого нав бара
         
         // set button
-        let plusBarButton = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(addNewTask)
-        )
+        let plusBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewTask))
         navigationItem.rightBarButtonItem = plusBarButton
         navigationController?.navigationBar.tintColor = .white
         
@@ -87,9 +80,9 @@ private extension TaskListViewController {
 }
 
 // MARK: - TaskViewControllerDelegate
-extension TaskListViewController: TaskViewControllerDelegate {
+extension TaskListViewController: TaskCreatorDelegate {
     func addTask(name: String) {
-        storageManager.saveTask(name) { task in
+        storageManager.addTask(name) { task in
             fetchData()
             // taskList.append(task)
             // tableView.reloadData()
@@ -131,5 +124,19 @@ extension TaskListViewController {
             self.fetchData()
         }
         return UISwipeActionsConfiguration(actions: [action])
+    }
+}
+
+
+// MARK: - settingCellAction
+extension TaskListViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let task: Tasker = taskList[indexPath.row]
+        let detailVC = DetailTaskViewController()
+        detailVC.task = task
+        navigationController?.pushViewController(detailVC, animated: true)
+        
+        // Снимаем выделение с ячейки
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }

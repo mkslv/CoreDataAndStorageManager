@@ -7,9 +7,13 @@
 
 import UIKit
 
-final class TaskViewController: UIViewController {
+protocol TaskCreatorDelegate: AnyObject {
+    func addTask(name: String) -> Void
+}
+
+final class CteateTaskViewController: UIViewController {
     
-    weak var delegate: TaskViewControllerDelegate!
+    weak var delegate: TaskCreatorDelegate!
     
     private lazy var taskTextField: UITextField = {
         let textField = UITextField()
@@ -47,18 +51,18 @@ final class TaskViewController: UIViewController {
     }
     
     func save() {
-        if let text = taskTextField.text {
+        if let text = taskTextField.text, !text.isEmpty {
             delegate.addTask(name: text)
             dismiss(animated: true)
         } else {
-            // Show alert: Text field is empty
+            present(AlertManager.showAlert(with: "Cannot save", and: "Text field is empty"), animated: true)
         }
     }
 }
 
 // MARK: - Setting view
 
-private extension TaskViewController {
+private extension CteateTaskViewController {
     func setupSubviews(_ subviews: UIView...) {
         subviews.forEach {
             view.addSubview($0)
@@ -68,7 +72,7 @@ private extension TaskViewController {
 
 // MARK: - Layout
 
-private extension TaskViewController {
+private extension CteateTaskViewController {
     func setupConstraints() {
         [taskTextField, saveButton, cancelButton].forEach { subView in
             subView.translatesAutoresizingMaskIntoConstraints = false
