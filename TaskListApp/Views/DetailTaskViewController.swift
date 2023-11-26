@@ -60,19 +60,7 @@ private extension DetailTaskViewController {
     func setupNavigationBar() {
         title = "Subtasks"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        // setup NavBar Apperance
-        let navBarApperance = UINavigationBarAppearance()
-        navBarApperance.configureWithOpaqueBackground() // делаем полупрозрачным с блюром
-        
-        navBarApperance.backgroundColor = UIColor(named: "MilkRed")
-        
-        navBarApperance.titleTextAttributes = [.foregroundColor: UIColor.white] // для маленького текста
-        navBarApperance.largeTitleTextAttributes = [.foregroundColor: UIColor.white] // для большого текста
-        
-        navigationController?.navigationBar.standardAppearance = navBarApperance // для маленького нав бара
-        navigationController?.navigationBar.scrollEdgeAppearance = navBarApperance // для большого нав бара
-        
+
         // set button
         let plusBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNewSubTask))
         
@@ -106,6 +94,7 @@ extension DetailTaskViewController {
         content.text = subtaskList[indexPath.row].name
         content.secondaryText = "\(subtaskList[indexPath.row].isImportant)"
         cell.contentConfiguration = content
+        print(subtaskList[indexPath.row])
         return cell
     }
 }

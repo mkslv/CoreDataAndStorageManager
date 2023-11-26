@@ -42,6 +42,7 @@ final class StorageManager {
     func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
         let subtask = Subtasker(context: context)
         subtask.name = name
+        subtask.task = task
         subtask.isImportant = Bool.random()
         task.addToSubtasks(subtask)
         completion(subtask)
