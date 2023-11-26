@@ -17,7 +17,9 @@ final class DetailTaskViewController: UITableViewController {
     
     // MARK: - Private properties
     private let storageManager = StorageManager.shared
-    private var subtaskList: [Subtasker]!
+    private lazy var subtaskList: [Subtasker] = {
+        task.subtasks?.array as? [Subtasker] ?? []
+    }()
     
     
     // MARK: - Lifecycle
@@ -84,8 +86,7 @@ extension DetailTaskViewController: TaskCreatorDelegate {
 // MARK: - TableView
 extension DetailTaskViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let list = subtaskList else { return 0 }
-        return list.count
+        subtaskList.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
