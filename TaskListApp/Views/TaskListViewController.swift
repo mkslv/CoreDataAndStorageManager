@@ -81,7 +81,7 @@ private extension TaskListViewController {
 // MARK: - TaskViewControllerDelegate
 extension TaskListViewController: TaskCreatorDelegate {
     func addTask(name: String) {
-        storageManager.saveTask(name) { task in
+        storageManager.addTask(name) { task in
             fetchData()
             // taskList.append(task)
             // tableView.reloadData()

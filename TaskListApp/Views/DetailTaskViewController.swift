@@ -97,4 +97,24 @@ extension DetailTaskViewController {
         print(subtaskList[indexPath.row])
         return cell
     }
+    
+    
 }
+
+// MARK: - tableView delete cell
+extension DetailTaskViewController {
+    override func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        // create an action
+        let action = UIContextualAction(style: .destructive, title: "Delete") {_,_,_ in
+            // which task should be deleted
+            let taskToDelete = self.subtaskList[indexPath.row]
+            self.storageManager.delete(taskToDelete)
+            self.fetchData()
+        }
+        return UISwipeActionsConfiguration(actions: [action])
+    }
+}
+

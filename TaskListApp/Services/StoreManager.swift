@@ -32,7 +32,7 @@ final class StorageManager {
     
     // MARK: - CRUD Methods
     // Create
-    func saveTask(_ name: String, completion: (Tasker) -> Void) {
+    func addTask(_ name: String, completion: (Tasker) -> Void) {
         let task = Tasker(context: context)
         task.name = name
         completion(task)
@@ -42,7 +42,7 @@ final class StorageManager {
     func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
         let subtask = Subtasker(context: context)
         subtask.name = name
-        subtask.task = task
+//        subtask.task = task // FIXME: Почему можно не указывать? Потому что связь Инверсная?
         subtask.isImportant = Bool.random()
         task.addToSubtasks(subtask)
         completion(subtask)
@@ -63,6 +63,11 @@ final class StorageManager {
     
     func fetchSubtaskData(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
         let fetchRequest = Subtasker.fetchRequest()
+        // Set up a predicate to filter subtasks related to the specific task
+        // FIXME: можно ли как то по другому получать информацию по конкретной таске?
+        let predicate = NSPredicate(format: "task == %@", task)
+        fetchRequest.predicate = predicate
+
         do{
             let tasks = try context.fetch(fetchRequest)
             completion(.success(tasks))
@@ -73,7 +78,13 @@ final class StorageManager {
     
     
     // Delete
+    // Так норм? или оптимизировать как то можно? Пока придумал что подписать на протокол и кинуть протокол в delete(_ data: ProtocolName)
     func delete(_ data: Tasker) {
+        context.delete(data)
+        saveContext()
+    }
+        
+    func delete(_ data: Subtasker) {
         context.delete(data)
         saveContext()
     }
