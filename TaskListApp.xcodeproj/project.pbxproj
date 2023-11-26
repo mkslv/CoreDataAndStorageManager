@@ -30,7 +30,6 @@
 		5136062F2B0FC5CC0005E33B /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		513606312B1139550005E33B /* FilledButtonFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledButtonFactory.swift; sourceTree = "<group>"; };
 		513606372B12B2190005E33B /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
-		5136063D2B12B3ED0005E33B /* Questions.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = Questions.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +46,6 @@
 		5136060C2B0FBDC30005E33B = {
 			isa = PBXGroup;
 			children = (
-				5136063D2B12B3ED0005E33B /* Questions.md */,
 				513606172B0FBDC30005E33B /* TaskListApp */,
 				513606162B0FBDC30005E33B /* Products */,
 			);
