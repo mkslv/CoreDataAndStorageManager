@@ -19,7 +19,6 @@ final class StorageManager {
     }
     
     // MARK: - Core Data stack
-
     private var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "TaskListApp")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
@@ -31,24 +30,13 @@ final class StorageManager {
     }()
     
     // MARK: - CRUD Methods
-    // Create
+    // Create task
     func addTask(_ name: String, completion: (Tasker) -> Void) {
         let task = Tasker(context: context)
         task.name = name
         completion(task)
         saveContext()
     }
-    
-    func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
-        let subtask = Subtasker(context: context)
-        subtask.name = name
-//        subtask.task = task // FIXME: Почему можно не указывать? Потому что связь Инверсная?
-        subtask.isImportant = Bool.random()
-        task.addToSubtasks(subtask)
-        completion(subtask)
-        saveContext()
-    }
-    
     
     // Retrive
     func fetchData(completion: (Result<[Tasker], Error>) -> Void) {
@@ -62,8 +50,8 @@ final class StorageManager {
     }
     
     func fetchSubtaskData(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
-        let fetchRequest = Subtasker.fetchRequest()
-        // Set up a predicate to filter subtasks related to the specific task
+        let fetchRequest: NSFetchRequest<Subtasker> = Subtasker.fetchRequest()
+
         // FIXME: можно ли как то по другому получать информацию по конкретной таске?
         let predicate = NSPredicate(format: "task == %@", task)
         fetchRequest.predicate = predicate
@@ -76,15 +64,15 @@ final class StorageManager {
         }
     }
     
-    
     // Delete
-    // Так норм? или оптимизировать как то можно? Пока придумал что подписать на протокол и кинуть протокол в delete(_ data: ProtocolName)
     func delete(_ data: Tasker) {
-        context.delete(data)
-        saveContext()
-    }
-        
-    func delete(_ data: Subtasker) {
+        // Delete all child tasks - subtasks
+        if let subtasks = data.subtasks {
+            for case let subtask as Subtasker in subtasks {
+                context.delete(subtask)
+            }
+        }
+        // Delete main task
         context.delete(data)
         saveContext()
     }
@@ -98,9 +86,44 @@ final class StorageManager {
         // Call the completion handler if needed
         completion()
     }
-
+    
+    // MARK: - Subtask CRUD Methods
+    // Create subtask
+    func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
+        let subtask = Subtasker(context: context)
+        subtask.name = name
+        subtask.isImportant = Bool.random()
+        subtask.task = task
+        
+        task.addToSubtasks(subtask)
+        saveContext()
+        completion(subtask)
+    }
+    
+    // Retrieve subtasks for a specific task // FIXME: должно ли это вообщ быть в СторМенеджере?
+    func fetchSubtasks(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
+        if let subtasks = task.subtasks?.array as? [Subtasker] {
+            completion(.success(subtasks))
+        } else {
+            completion(.success([]))
+        }
+    }
+    
+    // Delete subtask
+    func delete(_ data: Subtasker) {
+        context.delete(data)
+        saveContext()
+    }
+    
+    // Update subtask
+    func updateSubtask(_ subtask: Subtasker, newName: String, newImportance: Bool) {
+        subtask.name = newName
+        subtask.isImportant = newImportance
+        saveContext()
+    }
+    
     // MARK: - Core Data Saving support
-
+    
     func saveContext () {
         if context.hasChanges {
             do {
