@@ -49,21 +49,6 @@ final class StorageManager {
         }
     }
     
-    func fetchSubtaskData(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
-        let fetchRequest: NSFetchRequest<Subtasker> = Subtasker.fetchRequest()
-
-        // FIXME: можно ли как то по другому получать информацию по конкретной таске?
-        let predicate = NSPredicate(format: "task == %@", task)
-        fetchRequest.predicate = predicate
-
-        do{
-            let tasks = try context.fetch(fetchRequest)
-            completion(.success(tasks))
-        } catch {
-            completion(.failure(error))
-        }
-    }
-    
     // Delete
     func delete(_ data: Tasker) {
         // Delete all child tasks - subtasks
@@ -101,11 +86,26 @@ final class StorageManager {
     }
     
     // Retrieve subtasks for a specific task // FIXME: должно ли это вообщ быть в СторМенеджере?
-    func fetchSubtasks(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
+    func fetchSubtaskData(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
         if let subtasks = task.subtasks?.array as? [Subtasker] {
             completion(.success(subtasks))
         } else {
             completion(.success([]))
+        }
+    }
+    
+    func fetchSubtaskDataAlternative(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
+        let fetchRequest: NSFetchRequest<Subtasker> = Subtasker.fetchRequest()
+
+        // FIXME: можно ли как то по другому получать информацию по конкретной таске если с пустого места получаю?
+        let predicate = NSPredicate(format: "task == %@", task)
+        fetchRequest.predicate = predicate
+
+        do{
+            let tasks = try context.fetch(fetchRequest)
+            completion(.success(tasks))
+        } catch {
+            completion(.failure(error))
         }
     }
     
