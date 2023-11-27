@@ -109,6 +109,7 @@ extension DetailTaskViewController {
             // which task should be deleted
             let taskToDelete = self.subtaskList[indexPath.row]
             self.storageManager.delete(taskToDelete)
+//            tableView.deleteRows(at: indexPath.row, with: .automatic)
             self.fetchData()
         }
         return UISwipeActionsConfiguration(actions: [action])

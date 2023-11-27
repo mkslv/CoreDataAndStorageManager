@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22225" systemVersion="23B81" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Subtasker" representedClassName="Subtasker" syncable="YES" codeGenerationType="class">
+    <entity name="Subtasker" representedClassName="Subtasker" parentEntity="Tasker" syncable="YES" codeGenerationType="class">
         <attribute name="isImportant" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="name" attributeType="String"/>
+        <attribute name="subtask" attributeType="String"/>
         <relationship name="task" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Tasker" inverseName="subtasks" inverseEntity="Tasker"/>
     </entity>
     <entity name="Tasker" representedClassName="Tasker" syncable="YES" codeGenerationType="class">

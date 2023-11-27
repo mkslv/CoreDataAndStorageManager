@@ -31,24 +31,13 @@ final class StorageManager {
     }()
     
     // MARK: - CRUD Methods
-    // Create
+    // Create task
     func addTask(_ name: String, completion: (Tasker) -> Void) {
         let task = Tasker(context: context)
         task.name = name
         completion(task)
         saveContext()
     }
-    
-    func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
-        let subtask = Subtasker(context: context)
-        subtask.name = name
-//        subtask.task = task // FIXME: Почему можно не указывать? Потому что связь Инверсная?
-        subtask.isImportant = Bool.random()
-        task.addToSubtasks(subtask)
-        completion(subtask)
-        saveContext()
-    }
-    
     
     // Retrive
     func fetchData(completion: (Result<[Tasker], Error>) -> Void) {
@@ -62,7 +51,7 @@ final class StorageManager {
     }
     
     func fetchSubtaskData(for task: Tasker, completion: (Result<[Subtasker], Error>) -> Void) {
-        let fetchRequest = Subtasker.fetchRequest()
+        let fetchRequest: NSFetchRequest<Subtasker> = Subtasker.fetchRequest()
         // Set up a predicate to filter subtasks related to the specific task
         // FIXME: можно ли как то по другому получать информацию по конкретной таске?
         let predicate = NSPredicate(format: "task == %@", task)
@@ -78,7 +67,7 @@ final class StorageManager {
     
     
     // Delete
-    // Так норм? или оптимизировать как то можно? Пока придумал что подписать на протокол и кинуть протокол в delete(_ data: ProtocolName)
+    // Так норм? или оптимизировать как то можно? Пока придумал что подписать на протокол и кинуть протокол в delete(_ data: Tasker)
     func delete(_ data: Tasker) {
         context.delete(data)
         saveContext()
@@ -97,6 +86,18 @@ final class StorageManager {
         saveContext()
         // Call the completion handler if needed
         completion()
+    }
+    
+    // Create subtask
+    func addSubtask(_ name: String, for task: Tasker, completion: (Subtasker) -> Void) {
+        let subtask = Subtasker(context: context)
+        subtask.name = name
+        subtask.isImportant = Bool.random()
+        
+        task.addToSubtasks(subtask)
+        
+        saveContext()
+        completion(subtask)
     }
 
     // MARK: - Core Data Saving support
